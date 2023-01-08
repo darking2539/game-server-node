@@ -14,6 +14,12 @@ var username = {};
 
 io.on('connection', socket => {
 
+  console.log(socket.id, "connected");
+
+  socket.on('message', message => {
+    console.log(message);
+  });
+
   socket.on('set-username', message => {
     username[socket.id] = message;
     console.log('ID', socket.id, "set", message);
@@ -66,7 +72,7 @@ io.on('connection', socket => {
   });
 
   socket.on('playgame', message => {
-    io.to(socket.rooms).emit('play-game', message);
+    io.to(message["roomCode"]).emit('play-game', message);
   });
 
   socket.on('disconnect', () => {
