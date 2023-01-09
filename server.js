@@ -31,12 +31,12 @@ io.on('connection', socket => {
       status: "Waiting",
       room: room,
       join: {
-        socketId: socket.id,
-        username: username[socket.id] || "PLAYER1"
-      },
-      create: {
         socketId: "",
         username: ""
+      },
+      create: {
+        socketId: socket.id,
+        username: username[socket.id] || "PLAYER1"
       }
     };
     io.to(room).emit('status', statusReturn);
@@ -68,6 +68,11 @@ io.on('connection', socket => {
         statusReturn.create.username = username[socketId] || "";
       }
     }
+
+    if (statusReturn.create.username === "") {
+      statusReturn.status = "Not-found"
+    }
+
     io.to(room).emit('status', statusReturn);
   });
 
